@@ -1,0 +1,7 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Override specific rules from flutter_lints
+    avoid_unused_imports: false
+    deprecated_member_use: false
