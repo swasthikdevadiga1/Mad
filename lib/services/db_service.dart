@@ -14,6 +14,7 @@ class DbService {
   }
   static Future<Database> _initDB() async {
     String path = join(await getDatabasesPath(), 'app.db');
+    print('Database path: $path');
     return await openDatabase(
       path,
       version: 1,

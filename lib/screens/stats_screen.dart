@@ -12,99 +12,123 @@ class StatsScreen extends StatelessWidget {
       'Health', 'Education', 'Other'
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Statistics'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Statistics'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'This Month'),
+              Tab(text: 'Overall'),
+            ],
+          ),
+        ),
+        body: TabBarView(
           children: [
-            _buildSectionTitle('This Month'),
-            const SizedBox(height: 16),
-            Obx(() => Column(
-              children: [
-                _buildStatCard(
-                  'Income',
-                  controller.monthlyStats['income'] ?? 0.0,
-                  Colors.green,
-                  Icons.arrow_upward,
-                ),
-                const SizedBox(height: 12),
-                _buildStatCard(
-                  'Expense',
-                  controller.monthlyStats['expense'] ?? 0.0,
-                  Colors.red,
-                  Icons.arrow_downward,
-                ),
-                const SizedBox(height: 12),
-                _buildStatCard(
-                  'Balance',
-                  (controller.monthlyStats['income'] ?? 0.0) -
-                      (controller.monthlyStats['expense'] ?? 0.0),
-                  Colors.blue,
-                  Icons.account_balance_wallet,
-                ),
-              ],
-            )),
-            const SizedBox(height: 32),
-            _buildSectionTitle('Expense Breakdown'),
-            const SizedBox(height: 16),
-            Obx(() {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              final monthlyExpenses = controller.transactions.where((t) {
-                final now = DateTime.now();
-                return t.type == 'expense' &&
-                    t.date.month == now.month &&
-                    t.date.year == now.year;
-              }).toList();
-              return SimplePieChart(
-                expenses: monthlyExpenses,
-                categories: expenseCategories,
-              );
-            }),
-            const SizedBox(height: 32),
-            _buildSectionTitle('Overall Statistics'),
-            const SizedBox(height: 16),
-            Obx(() => Column(
-              children: [
-                _buildStatCard(
-                  'Total Income',
-                  controller.totalIncome,
-                  Colors.green,
-                  Icons.trending_up,
-                ),
-                const SizedBox(height: 12),
-                _buildStatCard(
-                  'Total Expense',
-                  controller.totalExpense,
-                  Colors.red,
-                  Icons.trending_down,
-                ),
-                const SizedBox(height: 12),
-                _buildStatCard(
-                  'Net Balance',
-                  controller.balance,
-                  controller.balance >= 0 ? Colors.green : Colors.red,
-                  Icons.account_balance,
-                ),
-              ],
-            )),
-            const SizedBox(height: 32),
-            _buildSectionTitle('Transaction Count'),
-            const SizedBox(height: 16),
-            Obx(() => _buildStatCard(
-              'Total Transactions',
-              controller.transactions.length.toDouble(),
-              Colors.purple,
-              Icons.receipt_long,
-              showCurrency: false,
-            )),
+            _buildMonthlyStats(context, controller, expenseCategories),
+            _buildOverallStats(context, controller),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildMonthlyStats(BuildContext context, TransactionController controller, List<String> expenseCategories) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Obx(() => Column(
+            children: [
+              _buildStatCard(
+                'Income',
+                controller.monthlyStats['income'] ?? 0.0,
+                Colors.green,
+                Icons.arrow_upward,
+              ),
+              const SizedBox(height: 12),
+              _buildStatCard(
+                'Expense',
+                controller.monthlyStats['expense'] ?? 0.0,
+                Colors.red,
+                Icons.arrow_downward,
+              ),
+              const SizedBox(height: 12),
+              _buildStatCard(
+                'Balance',
+                (controller.monthlyStats['income'] ?? 0.0) -
+                    (controller.monthlyStats['expense'] ?? 0.0),
+                Colors.blue,
+                Icons.account_balance_wallet,
+              ),
+            ],
+          )),
+          const SizedBox(height: 32),
+          _buildSectionTitle('Expense Breakdown'),
+          const SizedBox(height: 16),
+          Obx(() {
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final monthlyExpenses = controller.transactions.where((t) {
+              final now = DateTime.now();
+              return t.type == 'expense' &&
+                  t.date.month == now.month &&
+                  t.date.year == now.year;
+            }).toList();
+            return SimplePieChart(
+              expenses: monthlyExpenses,
+              categories: expenseCategories,
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOverallStats(BuildContext context, TransactionController controller) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Obx(() => Column(
+            children: [
+              _buildStatCard(
+                'Total Income',
+                controller.totalIncome,
+                Colors.green,
+                Icons.trending_up,
+              ),
+              const SizedBox(height: 12),
+              _buildStatCard(
+                'Total Expense',
+                controller.totalExpense,
+                Colors.red,
+                Icons.trending_down,
+              ),
+              const SizedBox(height: 12),
+              _buildStatCard(
+                'Net Balance',
+                controller.balance,
+                controller.balance >= 0 ? Colors.green : Colors.red,
+                Icons.account_balance,
+              ),
+            ],
+          )),
+          const SizedBox(height: 32),
+          _buildSectionTitle('Transaction Count'),
+          const SizedBox(height: 16),
+          Obx(() => _buildStatCard(
+            'Total Transactions',
+            controller.transactions.length.toDouble(),
+            Colors.purple,
+            Icons.receipt_long,
+            showCurrency: false,
+          )),
+        ],
       ),
     );
   }

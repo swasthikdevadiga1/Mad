@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'home_screen.dart';
 import 'stats_screen.dart';
-import 'add_transaction.dart';
 import '../routes/app_routes.dart';
 import '../utils/app_theme.dart';
 
@@ -29,27 +28,38 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
-            label: 'Stats',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: AppTheme.primaryColor,
-        onTap: _onItemTapped,
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(AppRoutes.addTransaction),
         child: Icon(Icons.add),
         backgroundColor: AppTheme.primaryColor,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: Container(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.home,
+                    color: _selectedIndex == 0
+                        ? AppTheme.primaryColor
+                        : Colors.grey),
+                onPressed: () => _onItemTapped(0),
+              ),
+              IconButton(
+                icon: Icon(Icons.bar_chart,
+                    color: _selectedIndex == 1
+                        ? AppTheme.primaryColor
+                        : Colors.grey),
+                onPressed: () => _onItemTapped(1),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

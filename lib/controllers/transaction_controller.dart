@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'auth_controller.dart';
-import '../models/user_model.dart';
 import '../models/transaction_model.dart';
 import '../services/db_service.dart';
 

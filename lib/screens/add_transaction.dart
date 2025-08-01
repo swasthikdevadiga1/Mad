@@ -132,33 +132,35 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 ),
                 const SizedBox(height: 16),
                 
-                // Category Dropdown
-                DropdownButtonFormField<String>(
-                  value: _selectedCategory,
-                  decoration: const InputDecoration(
-                    labelText: 'Category',
-                    prefixIcon: Icon(Icons.category),
-                  ),
-                  items: _categories.map((category) {
-                    return DropdownMenuItem(
-                      value: category,
-                      child: Row(
-                        children: [
-                          Icon(categoryIcons[category], size: 20),
-                          const SizedBox(width: 10),
-                          Text(category),
-                        ],
+                // Quick Category Selection
+                _buildSectionTitle('Quick Category'),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: _categories.map((category) {
+                    final isSelected = _selectedCategory == category;
+                    return ChoiceChip(
+                      label: Text(category),
+                      selected: isSelected,
+                      onSelected: (selected) {
+                        if (selected) {
+                          setState(() => _selectedCategory = category);
+                        }
+                      },
+                      avatar: Icon(
+                        categoryIcons[category],
+                        color: isSelected ? Colors.white : Theme.of(context).primaryColor,
+                      ),
+                      selectedColor: Theme.of(context).primaryColor,
+                      labelStyle: TextStyle(
+                        color: isSelected ? Colors.white : Colors.black,
                       ),
                     );
                   }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCategory = value!;
-                    });
-                  },
                 ),
-                const SizedBox(height: 16),
-                
+                const SizedBox(height: 24),
+
                 // Date Picker
                 ListTile(
                   leading: const Icon(Icons.calendar_today),
@@ -206,6 +208,16 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
       ),
     );
   }

@@ -88,6 +88,22 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             // Transactions List
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Recent Transactions',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                TextButton(
+                  onPressed: () {
+                    // TODO: Implement view all transactions
+                  },
+                  child: const Text('View All'),
+                )
+              ],
+            ),
+            const SizedBox(height: 8),
             Expanded(
               child: Obx(() {
                 if (transactionController.isLoading.value) {
@@ -99,15 +115,24 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.receipt_long,
-                          size: 64,
-                          color: Colors.grey[400],
+                          Icons.money_off,
+                          size: 80,
+                          color: Colors.grey[300],
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'No transactions found',
+                        const SizedBox(height: 20),
+                        const Text(
+                          'No transactions yet!',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Tap the + button to add your first transaction.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
                             color: Colors.grey[600],
                           ),
                         ),
