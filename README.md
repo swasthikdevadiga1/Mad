@@ -23,8 +23,8 @@ A cross-platform expense tracker app built with Flutter. Easily manage your inco
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone <repo-url>
-   cd see
+   git clone https://github.com/swasthikdevadiga1/Mad
+   cd mad
    ```
 2. Install dependencies:
    ```bash
@@ -94,7 +94,7 @@ You can inspect the SQLite database directly from the terminal using the `sqlite
 
 2. **Open the Database:**
    ```bash
-   sqlite3 /home/swasthik/see/.dart_tool/sqflite_common_ffi/databases/app.db
+   sqlite3 path-to-app.db #database
    ```
 
 3. **List Tables:**
